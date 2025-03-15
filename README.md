@@ -2,7 +2,7 @@
 
 Welcome to **AstroConnect**, a sophisticated astrology application that provides personalized horoscope readings, partner compatibility insights, and past searches, all integrated with **AI-powered predictions** using **Hugging Face’s Falcon-7B model**.
 
-This project is being developed collaboratively by two professionals:
+This project is being developed collaboratively by one professional:
 
 - **Lead Software Engineer & System Architect:** Responsible for backend development, API integration, database management, and business logic implementation along with UI development.
 
