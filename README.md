@@ -83,8 +83,9 @@ flutter pub get
 3. Replace \`"xxx"\` with your API Key in \`huggingface_service.dart\`.
 
 \`\`\`dart
-final String \_apiKey = "YOUR_HUGGING_FACE_API_KEY";
-\`\`\`
+final String \_apiKey = "xxx"; // Add your API key here 
+\`\`\` 
+Note: huggingface_service.dart and huggingface2_service.dart is not added to the repository for security purpose
 
 ### **Step 5: Run the App**
 
