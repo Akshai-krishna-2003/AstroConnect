@@ -136,48 +136,7 @@ flutter run
 ## 🏗 **Folder Structure**
 
 \`\`\`
-astroconnect/
-│── lib/ # Main Flutter application code
-│ ├── screens/ # UI Screens (Login, Home, Astrology, etc.)
-│ │ ├── astrology_input_screen.dart
-│ │ ├── home_screen.dart
-│ │ ├── login_screen.dart
-│ │ ├── partner_compatibility_screen.dart
-│ │ ├── previous_searches_screen.dart
-│ │
-│ ├── services/ # API Calls, Firebase, Database Handling
-│ │ ├── auth_service.dart
-│ │ ├── db_service.dart
-│ │ ├── firestore_service.dart
-│ │ ├── history_service.dart
-│ │ ├── huggingface_service.dart
-│ │ ├── huggingface2_service.dart
-│ │ ├── localization_service.dart
-│ │ ├── firebase_options.dart
-│ │
-│ ├── localization/ # JSON Files for Multi-Language Support
-│ │ ├── en.json
-│ │ ├── hi.json
-│ │ ├── ml.json
-│ │ ├── ta.json
-│ │
-│ ├── assets/ # Images, Icons, Backgrounds
-│ │ ├── google_logo.png
-│ │ ├── astrology_icon.png
-│ │ ├── stars_background.png
-│ │
-│ ├── main.dart # Entry Point
-│
-│── android/ # Android-specific Configuration
-│── ios/ # iOS-specific Configuration
-│── linux/ # Linux-specific Configuration
-│── macos/ # macOS-specific Configuration
-│── web/ # Web-specific Configuration
-│── windows/ # Windows-specific Configuration
-│
-│── pubspec.yaml # Project Dependencies & Assets Configuration
-│── README.md # Project Documentation
-│── .gitignore # Ignore Unnecessary Files in Git
+astroconnect/ │── lib/ # Main Flutter application code │ ├── screens/ # UI Screens (Login, Home, Astrology, etc.) │ │ ├── astrology_input_screen.dart │ │ ├── home_screen.dart │ │ ├── login_screen.dart │ │ ├── partner_compatibility_screen.dart │ │ ├── previous_searches_screen.dart │ │ │ ├── services/ # API Calls, Firebase, Database Handling │ │ ├── auth_service.dart │ │ ├── db_service.dart │ │ ├── firestore_service.dart │ │ ├── history_service.dart │ │ ├── huggingface_service.dart (excluded from repository for security) │ │ ├── huggingface2_service.dart (excluded from repository for security) │ │ ├── localization_service.dart │ │ ├── firebase_options.dart │ │ │ ├── localization/ # JSON Files for Multi-Language Support │ │ ├── en.json │ │ ├── hi.json │ │ ├── ml.json │ │ ├── ta.json │ │ │ ├── assets/ # Images, Icons, Backgrounds │ │ ├── google_logo.png │ │ ├── astrology_icon.png │ │ ├── stars_background.png │ │ │ ├── main.dart # Entry Point │ │── android/ # Android-specific Configuration │── ios/ # iOS-specific Configuration │── linux/ # Linux-specific Configuration │── macos/ # macOS-specific Configuration │── web/ # Web-specific Configuration │── windows/ # Windows-specific Configuration │ │── pubspec.yaml # Project Dependencies & Assets Configuration │── README.md # Project Documentation │── .gitignore # Ignore Unnecessary Files in Git
 
 ---
 
