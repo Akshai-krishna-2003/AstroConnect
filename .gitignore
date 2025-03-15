@@ -1,0 +1,106 @@
+# Flutter & Dart related files
+.dart_tool/
+.packages
+.pub/
+build/
+android/.gradle/
+android/app/generated/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/.symlinks/
+linux/.dart_tool/
+macos/.dart_tool/
+windows/.dart_tool/
+web/.dart_tool/
+
+# Dependency lock files
+pubspec.lock
+
+# Xcode-specific files
+ios/.generated/
+ios/.DS_Store
+ios/Pods/
+ios/.swiftpm/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+
+# IntelliJ / VS Code IDE Settings
+.idea/
+.vscode/
+*.iml
+
+# Build / Artifacts
+*.lock
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+*.DS_Store
+*.orig
+
+# User-specific settings
+*.env
+*.secrets
+*.credentials
+*.key
+*.pem
+*.crt
+*.p12
+*.jks
+*.keystore
+
+# Firebase & Google Services Keys
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+lib/firebase_options.dart
+
+# Authentication Files
+auth_secrets.json
+auth_config.json
+
+# Generated Localization Files
+lib/localization/*.g.dart
+lib/l10n/*.arb
+lib/generated_plugin_registrant.dart
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs & Crash Reports
+*.log
+crashlytics/
+sentry-debug-meta.properties
+flutter_*.log
+
+# Flutter build files
+flutter_*.log
+.dart_tool/
+build/
+android/app/src/profile/
+android/app/src/debug/
+
+# Generated Gradle Files
+android/app/.cxx/
+android/local.properties
+android/app/debug.keystore
+android/key.properties
+
+# Generated Protobuf files
+android/proto/build/
+android/proto/src/
+
+# Hugging Face Model Cache
+huggingface_model_cache/
+lib/services/huggingface_service.dart
+lib/services/huggingface2_service.dart
+
+# Misc
+*.orig
+*.swp
+*.swo
+*.swn
