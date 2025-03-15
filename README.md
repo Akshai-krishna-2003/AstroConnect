@@ -4,8 +4,7 @@ Welcome to **AstroConnect**, a sophisticated astrology application that provides
 
 This project is being developed collaboratively by two professionals:
 
-- **Lead Software Engineer & System Architect:** Responsible for backend development, API integration, database management, and business logic implementation.
-- **UI/UX Designer & Performance Optimization Engineer:** Enhances UI aesthetics, optimizes performance, and ensures seamless user experience.
+- **Lead Software Engineer & System Architect:** Responsible for backend development, API integration, database management, and business logic implementation along with UI development.
 
 ---
 
@@ -213,7 +212,6 @@ flutter run
 | Role                                                   | Name               | Email                       | GitHub                                           | LinkedIn                                                                    |
 | ------------------------------------------------------ | ------------------ | --------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------- |
 | **Lead Software Engineer & System Architect**          | _Akshai Krishna A_ | akshaykrishna1983@gmail.com | [Akshai](https://github.com/Akshai-krishna-2003) | [Akshai Krishna](https://www.linkedin.com/in/akshai-krishna-a-a5ab99224/)   |
-| **UI/UX Designer & Performance Optimization Engineer** | _Lathika Devanand_ | devanandlathika@gmail.com   | [Lathika](https://github.com/lolpanda2004)       | [Lathika Devanand](https://www.linkedin.com/in/lathika-devanand-bb5813224/) |
 
 📢 **Want to Contribute?** Feel free to fork this repository and submit a **pull request**.
 
