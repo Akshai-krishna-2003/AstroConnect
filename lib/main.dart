@@ -5,12 +5,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/localization_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await _requestPermissions();
 
   runApp(MyApp());
+}
+
+Future<void> _requestPermissions() async {
+  await [Permission.camera, Permission.storage, Permission.photos].request();
 }
 
 class MyApp extends StatefulWidget {
@@ -33,7 +39,6 @@ class _MyAppState extends State<MyApp> {
       _locale = savedLocale;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {

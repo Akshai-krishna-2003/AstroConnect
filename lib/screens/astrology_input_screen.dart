@@ -12,7 +12,7 @@ class AstrologyInputScreen extends StatefulWidget {
 }
 
 class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
-  final MistralService _apiService = MistralService();
+  FalconService _apiService = FalconService();
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final ImagePicker _picker = ImagePicker();
 
@@ -23,6 +23,16 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
 
   bool _isLoading = false;
   File? _selectedImage;
+
+  void _resetFields() {
+    setState(() {
+      _nameController.clear();
+      _dobController.clear();
+      _timeController.clear();
+      _pobController.clear();
+      _selectedImage = null;
+    });
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -67,202 +77,312 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
-    String result = await _apiService.getAstrologyResponse(
-      _nameController.text,
-      _dobController.text,
-      _timeController.text,
-      _pobController.text,
-    );
+    try {
+      String result = await _apiService.getAstrologyResponse(
+        _nameController.text,
+        _dobController.text,
+        _timeController.text,
+        _pobController.text,
+      );
 
-    setState(() {
-      _isLoading = false;
-    });
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId != null) {
+        await _dbHelper.insertHistory({
+          "user_id": userId,
+          "name": _nameController.text,
+          "dob": _dobController.text,
+          "gender": "N/A",
+          "time_of_birth": _timeController.text,
+          "place_of_birth": _pobController.text,
+          "response": result,
+          "image_path": _selectedImage?.path,
+          "type": "individual",
+        });
+      }
 
-    String? userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId == null) {
-      print("❌ Error: No user ID found.");
-      return;
+      _showResponsePopup(result, _selectedImage);
+    } finally {
+      setState(() => _isLoading = false);
     }
-
-    _dbHelper.insertHistory({
-      "user_id": userId,
-      "name": _nameController.text,
-      "dob": _dobController.text,
-      "gender": "N/A",
-      "time_of_birth": _timeController.text,
-      "place_of_birth": _pobController.text,
-      "response": result,
-      "image_path": _selectedImage?.path,
-      "type": "individual",
-    });
-
-    print("✅ Successfully stored individual astrology data for user: $userId");
-
-    _showResponsePopup(result, _selectedImage);
   }
 
   void _showResponsePopup(String response, File? image) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.75,
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: Icon(Icons.close, color: Colors.red, size: 28),
-                    onPressed: () => Navigator.pop(context),
+      builder:
+          (context) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.9,
+                maxHeight: MediaQuery.of(context).size.height * 0.75,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.red),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
                   ),
-                ),
-                if (image != null)
-                  Container(
-                    width: double.infinity,
-                    height: 250, // Increased height for better fit
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey),
+                  if (image != null)
+                    Container(
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.amber[100]!),
+                      ),
+                      child: ClipOval(
+                        child: Image.file(image, fit: BoxFit.cover),
+                      ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.file(
-                        image,
-                        fit: BoxFit.cover, // Ensures proper fit
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Text(
+                        response,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.amber[100],
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                SizedBox(height: 10),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Text(
-                          "🔮 Astrology Insights",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(response, textAlign: TextAlign.left),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        );
-      },
-    );
+    ).then((_) => _resetFields());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Astrology Insights")),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: "Enter Your Name"),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _dobController,
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: "Select Date of Birth",
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () => _selectDate(context),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _timeController,
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: "Select Time of Birth",
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.access_time),
-                  onPressed: () => _selectTime(context),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _pobController,
-              decoration: InputDecoration(labelText: "Enter Place of Birth"),
-            ),
-            SizedBox(height: 10),
-
-            // Image Selection Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      appBar: AppBar(
+        title: Text(
+          'Astrology Insights',
+          style: TextStyle(
+            color: Colors.amber[100],
+            fontWeight: FontWeight.w500,
+            fontSize: 22,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.amber[100]),
+      ),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/internal_bg.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.camera),
-                  icon: Icon(Icons.camera),
-                  label: Text("Take Photo"),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.gallery),
-                  icon: Icon(Icons.image),
-                  label: Text("Pick from Gallery"),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildInputField(
+                        controller: _nameController,
+                        label: 'Full Name',
+                        icon: Icons.person_outline,
+                      ),
+                      SizedBox(height: 20),
+                      _buildDateField(),
+                      SizedBox(height: 20),
+                      _buildTimeField(),
+                      SizedBox(height: 20),
+                      _buildInputField(
+                        controller: _pobController,
+                        label: 'Place of Birth',
+                        icon: Icons.location_on_outlined,
+                      ),
+                      SizedBox(height: 30),
+                      _buildImageSection(),
+                      SizedBox(height: 30),
+                      _isLoading
+                          ? CircularProgressIndicator(color: Colors.amber[100])
+                          : ElevatedButton(
+                            onPressed: _fetchAstrologyResponse,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.amber[800]!.withOpacity(
+                                0.8,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 40,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Text(
+                              'Generate Insights',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.amber[50],
+                                letterSpacing: 1.1,
+                              ),
+                            ),
+                          ),
+                    ],
+                  ),
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
 
-            // Display Selected Image
-            if (_selectedImage != null)
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Container(
-                  width: double.infinity,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.file(
-                      _selectedImage!,
-                      fit: BoxFit.cover, // Ensures image fits properly
-                    ),
-                  ),
-                ),
-              ),
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+  }) {
+    return TextField(
+      controller: controller,
+      style: TextStyle(color: Colors.amber[50]),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.amber[100]),
+        prefixIcon: Icon(icon, color: Colors.amber[100]),
+        filled: true,
+        fillColor: Colors.black.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      ),
+    );
+  }
 
-            SizedBox(height: 16),
+  Widget _buildDateField() {
+    return TextField(
+      controller: _dobController,
+      readOnly: true,
+      style: TextStyle(color: Colors.amber[50]),
+      decoration: InputDecoration(
+        labelText: 'Date of Birth',
+        labelStyle: TextStyle(color: Colors.amber[100]),
+        prefixIcon: Icon(
+          Icons.calendar_month_outlined,
+          color: Colors.amber[100],
+        ),
+        filled: true,
+        fillColor: Colors.black.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(Icons.edit_outlined, color: Colors.amber[100]),
+          onPressed: () => _selectDate(context),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      ),
+    );
+  }
 
-            // Loading Indicator
-            _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ElevatedButton(
-                  onPressed: _fetchAstrologyResponse,
-                  child: Text("Get Astrology Insights"),
-                ),
+  Widget _buildTimeField() {
+    return TextField(
+      controller: _timeController,
+      readOnly: true,
+      style: TextStyle(color: Colors.amber[50]),
+      decoration: InputDecoration(
+        labelText: 'Time of Birth',
+        labelStyle: TextStyle(color: Colors.amber[100]),
+        prefixIcon: Icon(Icons.access_time_outlined, color: Colors.amber[100]),
+        filled: true,
+        fillColor: Colors.black.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide.none,
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(Icons.edit_outlined, color: Colors.amber[100]),
+          onPressed: () => _selectTime(context),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      ),
+    );
+  }
 
-            SizedBox(height: 16),
+  Widget _buildImageSection() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildImageButton(
+              icon: Icons.camera_alt_outlined,
+              label: 'Camera',
+              onPressed: () => _pickImage(ImageSource.camera),
+            ),
+            SizedBox(width: 15),
+            _buildImageButton(
+              icon: Icons.photo_library_outlined,
+              label: 'Gallery',
+              onPressed: () => _pickImage(ImageSource.gallery),
+            ),
           ],
         ),
+        SizedBox(height: 20),
+        if (_selectedImage != null)
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.amber[100]!, width: 3),
+            ),
+            child: ClipOval(
+              child: Image.file(
+                _selectedImage!,
+                width: 120,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildImageButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 20, color: Colors.amber[50]),
+      label: Text(label, style: TextStyle(color: Colors.amber[50])),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.amber[800]!.withOpacity(0.7),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
   }

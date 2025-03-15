@@ -42,6 +42,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   shared_preferences: ^2.2.2
+  permission_handler: ^11.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,6 +52,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -58,6 +60,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/astrology_icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/astrology_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -101,8 +110,15 @@ flutter:
   # see https://flutter.dev/to/font-from-package
   assets:
     - assets/google_logo.png
-    - assets/stars_background.png
+    - assets/stars_background.jpg
     - assets/astrology_icon.png
+    - assets/astrology_background.jpg
+    - assets/crystal_ball.png
+    - assets/love_aura.png
+    - assets/scroll.png
+    - assets/internal_bg.jpg
+    - assets/camera_icon.png
+    - assets/gallery_icon.png
     - lib/localization/en.json
     - lib/localization/ml.json
     - lib/localization/ta.json

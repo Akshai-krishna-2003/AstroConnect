@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var user = await _authService.getUserDetails();
     if (user != null) {
       setState(() {
-        username = user["username"]; // Correctly fetching username
+        username = user["username"];
       });
 
       // Now start rotating languages after setting username
@@ -84,53 +84,160 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: AnimatedSwitcher(
-          duration: Duration(milliseconds: 500), // Smooth transition effect
-          child: Text(_welcomeMessage, key: ValueKey<String>(_welcomeMessage)),
-        ),
-        actions: [IconButton(icon: Icon(Icons.logout), onPressed: _logout)],
+      body: Stack(
+        children: [
+          // **Background Image**
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/astrology_background.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          // **Logout Button (Top Right)**
+          Positioned(
+            top: 40,
+            right: 20,
+            child: IconButton(
+              icon: Icon(Icons.logout, color: Colors.white, size: 28),
+              onPressed: _logout,
+            ),
+          ),
+
+          // **Content Layout**
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 60),
+
+              // **Welcome Message**
+              Center(
+                child: Text(
+                  _welcomeMessage,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10,
+                        color: Colors.purpleAccent,
+                        offset: Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 30),
+
+              // **Buttons Section**
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildAstroButton(
+                        "🔮 See Your Future",
+                        "assets/crystal_ball.png",
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AstrologyInputScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildAstroButton(
+                        "💑 Find Your Match",
+                        "assets/love_aura.png",
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => PartnerCompatibilityScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildAstroButton(
+                        "📜 Previous Searches",
+                        "assets/scroll.png",
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PreviousSearchesScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AstrologyInputScreen(),
-                  ),
-                );
-              },
-              child: Text("🔮 See Your Future"),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PartnerCompatibilityScreen(),
-                  ),
-                );
-              },
-              child: Text("💑 Find Your Match"),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PreviousSearchesScreen(),
-                  ),
-                );
-              },
-              child: Text("📜 Previous Searches"),
+    );
+  }
+
+  // **Custom Button Builder**
+  Widget _buildAstroButton(String text, String imagePath, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: EdgeInsets.all(20),
+        height: MediaQuery.of(context).size.height / 4, // Adjusted size
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.contain,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.purpleAccent.withOpacity(0.5),
+              blurRadius: 10,
+              spreadRadius: 2,
+              offset: Offset(0, 4),
             ),
           ],
+          gradient: LinearGradient(
+            colors: [
+              Colors.deepPurple.withOpacity(0.7),
+              Colors.blueAccent.withOpacity(0.5),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  blurRadius: 5,
+                  color: Colors.black45,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

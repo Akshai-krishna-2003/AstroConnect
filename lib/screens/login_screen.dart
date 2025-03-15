@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/stars_background.png'),
+                image: AssetImage('assets/stars_background.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -104,14 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 60),
+                    SizedBox(height: 50),
 
                     // Title - AstroConnect (Refined positioning)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "assets/astrology_icon.png", 
+                          "assets/astrology_icon.png",
                           width: 50,
                           height: 50,
                         ),
@@ -120,12 +120,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           "AstroConnect",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 34,
+                            fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             shadows: [
                               Shadow(
-                                blurRadius: 10,
+                                blurRadius: 12,
                                 color: Colors.purpleAccent,
                                 offset: Offset(0, 0),
                               ),
@@ -135,14 +135,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
 
-                    SizedBox(height: 40),
+                    SizedBox(height: 35),
 
                     // Toggle Login/Sign-up
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 30,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.black.withOpacity(0.3),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -155,8 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 18,
                                 color:
                                     _isLogin
-                                        ? Colors.purpleAccent
-                                        : Colors.white,
+                                        ? Colors.cyanAccent
+                                        : Colors.white70,
                                 fontWeight:
                                     _isLogin
                                         ? FontWeight.bold
@@ -173,8 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 18,
                                 color:
                                     !_isLogin
-                                        ? const Color.fromARGB(255, 255, 140, 0)
-                                        : Colors.white,
+                                        ? Colors.cyanAccent
+                                        : Colors.white70,
                                 fontWeight:
                                     !_isLogin
                                         ? FontWeight.bold
@@ -186,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    SizedBox(height: 20),
+                    SizedBox(height: 25),
 
                     if (!_isLogin)
                       _buildTextField("Full Name", _fullNameController),
@@ -212,24 +215,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               vertical: 12,
                               horizontal: 80,
                             ),
-                            backgroundColor: Colors.deepPurple,
+                            backgroundColor: Colors.deepPurpleAccent,
                           ),
                           child: Text(_isLogin ? "Login" : "Sign Up"),
                         ),
 
                     SizedBox(height: 20),
 
-                    // Centered Forgot Password (Perfected Alignment)
+                    // Centered Forgot Password
                     if (_isLogin)
                       Align(
                         alignment: Alignment.center,
                         child: GestureDetector(
-                          onTap: () {
-                            // Forgot Password Functionality Here
-                          },
+                          onTap: () {},
                           child: Text(
                             "Forgot Password?",
-                            style: TextStyle(color: Colors.purpleAccent),
+                            style: TextStyle(color: Colors.cyanAccent),
                           ),
                         ),
                       ),
@@ -246,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             child: Text(
                               "Already have an account? Login",
-                              style: TextStyle(color: Colors.purpleAccent),
+                              style: TextStyle(color: Colors.orangeAccent),
                             ),
                           ),
                         ],
@@ -276,8 +277,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Image.asset(
                           "assets/google_logo.png",
-                          width: 30, // Adjusted size
-                          height: 30, // Adjusted size
+                          width: 28,
+                          height: 28,
                         ),
                       ),
                     ),
@@ -305,11 +306,11 @@ class _LoginScreenState extends State<LoginScreen> {
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.purpleAccent),
+          labelStyle: TextStyle(color: Colors.cyanAccent),
           fillColor: Colors.white.withOpacity(0.2),
           filled: true,
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.purpleAccent, width: 2),
+            borderSide: BorderSide(color: Colors.cyanAccent, width: 2),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white70, width: 1),
