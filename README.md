@@ -59,7 +59,7 @@ It includes:
 ### **Step 1: Clone the Repository**
 
 \`\`\`bash
-git clone https://github.com/yourusername/astroconnect.git
+git clone https://github.com/Akshai-krishna-2003/AstroConnect.git
 cd astroconnect
 \`\`\`
 
