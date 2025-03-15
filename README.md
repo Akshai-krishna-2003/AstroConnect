@@ -4,8 +4,8 @@ Welcome to **AstroConnect**, a sophisticated astrology application that provides
 
 This project is being developed collaboratively by two professionals:
 
-- **Developer & System Designer:** Responsible for backend development, API integration, database management, and business logic implementation.
-- **UI Developer & Performance Improviser:** Enhances UI aesthetics, optimizes performance, and ensures seamless user experience.
+- **Lead Software Engineer & System Architect:** Responsible for backend development, API integration, database management, and business logic implementation.
+- **UI/UX Designer & Performance Optimization Engineer:** Enhances UI aesthetics, optimizes performance, and ensures seamless user experience.
 
 ---
 
