@@ -195,6 +195,7 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 80),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 30),
                   decoration: BoxDecoration(
