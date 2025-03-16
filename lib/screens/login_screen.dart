@@ -80,6 +80,46 @@ class _LoginScreenState extends State<LoginScreen> {
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  void _showForgotPasswordDialog() {
+    TextEditingController _forgotEmailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Reset Password"),
+          content: TextField(
+            controller: _forgotEmailController,
+            decoration: InputDecoration(
+              labelText: "Enter your email",
+              prefixIcon: Icon(Icons.email),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                String email = _forgotEmailController.text.trim();
+                if (email.isEmpty) {
+                  _showMessage("Please enter your email.");
+                  return;
+                }
+
+                String? result = await _authService.resetPassword(email);
+                _showMessage(result ?? "Password reset email sent!");
+                Navigator.pop(context);
+              },
+              child: Text("Send"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -227,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Align(
                         alignment: Alignment.center,
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: _showForgotPasswordDialog,
                           child: Text(
                             "Forgot Password?",
                             style: TextStyle(color: Colors.cyanAccent),
