@@ -6,6 +6,7 @@ import 'login_screen.dart';
 import 'astrology_input_screen.dart';
 import 'partner_compatibility_screen.dart';
 import 'previous_searches_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -35,6 +36,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // Now start rotating languages after setting username
       _startLanguageRotation();
+    }
+  }
+
+  Future<void> _launchPrivacyPolicy() async {
+    final Uri url = Uri.parse(
+      'https://sites.google.com/view/privacy-policy-astro-connect/home',
+    );
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
     }
   }
 
@@ -103,6 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               icon: Icon(Icons.logout, color: Colors.white, size: 28),
               onPressed: _logout,
+            ),
+          ),
+
+          // This is like i button for privacy policy I made using google sites
+          Positioned(
+            top: 40,
+            left: 20,
+            child: IconButton(
+              icon: Icon(Icons.info, color: Colors.white70, size: 28),
+              onPressed: _launchPrivacyPolicy,
             ),
           ),
 

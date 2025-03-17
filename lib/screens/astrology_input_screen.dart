@@ -170,7 +170,7 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Astrology Insights',
+          '🔮 Astrology Insights',
           style: TextStyle(
             color: Colors.amber[100],
             fontWeight: FontWeight.w500,
@@ -182,75 +182,87 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
         iconTheme: IconThemeData(color: Colors.amber[100]),
       ),
       extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/internal_bg.jpg'),
-            fit: BoxFit.cover,
+
+      body: SizedBox.expand(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/internal_bg.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 80),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(20),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildInputField(
-                        controller: _nameController,
-                        label: 'Full Name',
-                        icon: Icons.person_outline,
-                      ),
-                      SizedBox(height: 20),
-                      _buildDateField(),
-                      SizedBox(height: 20),
-                      _buildTimeField(),
-                      SizedBox(height: 20),
-                      _buildInputField(
-                        controller: _pobController,
-                        label: 'Place of Birth',
-                        icon: Icons.location_on_outlined,
-                      ),
-                      SizedBox(height: 30),
-                      _buildImageSection(),
-                      SizedBox(height: 30),
-                      _isLoading
-                          ? CircularProgressIndicator(color: Colors.amber[100])
-                          : ElevatedButton(
-                            onPressed: _fetchAstrologyResponse,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.amber[800]!.withOpacity(
-                                0.8,
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 40,
-                                vertical: 15,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
+                      SizedBox(height: 80),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 25,
+                          vertical: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildInputField(
+                              controller: _nameController,
+                              label: 'Full Name',
+                              icon: Icons.person_outline,
                             ),
-                            child: Text(
-                              'Generate Insights',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.amber[50],
-                                letterSpacing: 1.1,
-                              ),
+                            SizedBox(height: 20),
+                            _buildDateField(),
+                            SizedBox(height: 20),
+                            _buildTimeField(),
+                            SizedBox(height: 20),
+                            _buildInputField(
+                              controller: _pobController,
+                              label: 'Place of Birth',
+                              icon: Icons.location_on_outlined,
                             ),
-                          ),
+                            SizedBox(height: 30),
+                            _buildImageSection(),
+                            SizedBox(height: 30),
+                            _isLoading
+                                ? CircularProgressIndicator(
+                                  color: Colors.amber[100],
+                                )
+                                : ElevatedButton(
+                                  onPressed: _fetchAstrologyResponse,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.amber[800]!
+                                        .withOpacity(0.8),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 40,
+                                      vertical: 15,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Generate Insights',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.amber[50],
+                                      letterSpacing: 1.1,
+                                    ),
+                                  ),
+                                ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
         ),

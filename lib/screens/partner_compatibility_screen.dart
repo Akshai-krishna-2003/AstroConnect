@@ -180,59 +180,67 @@ class _PartnerCompatibilityScreenState
         iconTheme: IconThemeData(color: Colors.amber[100]),
       ),
       extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/internal_bg.jpg'),
-            fit: BoxFit.cover,
+
+      body: SizedBox.expand(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/internal_bg.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
-            child: Column(
-              children: [
-                _buildSection(
-                  title: "Bride Details",
-                  nameController: _brideNameController,
-                  dobController: _brideDobController,
-                  timeController: _brideTimeController,
-                  placeController: _bridePlaceController,
-                ),
-                SizedBox(height: 25),
-                _buildSection(
-                  title: "Groom Details",
-                  nameController: _groomNameController,
-                  dobController: _groomDobController,
-                  timeController: _groomTimeController,
-                  placeController: _groomPlaceController,
-                ),
-                SizedBox(height: 30),
-                _loading
-                    ? CircularProgressIndicator(color: Colors.amber[100])
-                    : ElevatedButton(
-                      onPressed: _checkCompatibility,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber[800]!.withOpacity(0.8),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 15,
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+                bottom: 20,
+              ),
+              child: Column(
+                children: [
+                  _buildSection(
+                    title: "Bride Details",
+                    nameController: _brideNameController,
+                    dobController: _brideDobController,
+                    timeController: _brideTimeController,
+                    placeController: _bridePlaceController,
+                  ),
+                  SizedBox(height: 25),
+                  _buildSection(
+                    title: "Groom Details",
+                    nameController: _groomNameController,
+                    dobController: _groomDobController,
+                    timeController: _groomTimeController,
+                    placeController: _groomPlaceController,
+                  ),
+                  SizedBox(height: 30),
+                  _loading
+                      ? CircularProgressIndicator(color: Colors.amber[100])
+                      : ElevatedButton(
+                        onPressed: _checkCompatibility,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber[800]!.withOpacity(0.8),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 15,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                        child: Text(
+                          "Check Compatibility",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.amber[50],
+                            letterSpacing: 1.1,
+                          ),
                         ),
                       ),
-                      child: Text(
-                        "Check Compatibility",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.amber[50],
-                          letterSpacing: 1.1,
-                        ),
-                      ),
-                    ),
-                SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
-              ],
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+                ],
+              ),
             ),
           ),
         ),

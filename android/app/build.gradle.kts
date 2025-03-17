@@ -3,9 +3,9 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
-    id("com.google.gms.google-services") 
+    id("com.google.gms.google-services")
     id("kotlin-android")
-    id("dev.flutter.flutter-gradle-plugin") 
+    id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
@@ -35,17 +35,20 @@ android {
     val keystoreProperties = Properties()
 
     if (keystorePropertiesFile.exists()) {
-        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+        FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
     }
 
     signingConfigs {
-        create("release") {
-            storeFile = keystoreProperties["storeFile"]?.toString()?.let { file(it) }
-            storePassword = keystoreProperties["storePassword"]?.toString()
-            keyAlias = keystoreProperties["keyAlias"]?.toString()
-            keyPassword = keystoreProperties["keyPassword"]?.toString()
+    create("release") {
+        val storeFilePath = keystoreProperties["storeFile"]?.toString()
+        if (!storeFilePath.isNullOrBlank()) {
+            storeFile = file(storeFilePath)
         }
+        storePassword = keystoreProperties["storePassword"]?.toString()
+        keyAlias = keystoreProperties["keyAlias"]?.toString()
+        keyPassword = keystoreProperties["keyPassword"]?.toString()
     }
+}
 
     buildTypes {
         release {
