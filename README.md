@@ -1,6 +1,6 @@
 # **AstroConnect - Your Personalized Astrology Companion** 🔮✨
 
-Welcome to **AstroConnect**, a sophisticated astrology application that provides personalized horoscope readings, partner compatibility insights, and past searches, all integrated with **AI-powered predictions** using **Hugging Face’s Falcon-7B model**.
+Welcome to **AstroConnect**, a sophisticated astrology application that provides personalized horoscope readings, partner compatibility insights, and past searches, all integrated with **AI-powered predictions** using **Hugging Face’s astroGPT model**.
 
 This project is being developed collaboratively by one professional:
 
@@ -47,7 +47,7 @@ It includes:
 
 ### **Machine Learning Model Used**
 
-- **Model:** [Falcon-7B Instruct](https://huggingface.co/tiiuae/falcon-7b-instruct)
+- **Model:** [astroGPT](https://huggingface.co/stevhliu/astroGPT)
 - **Purpose:** Generates astrology-based insights using natural language processing (NLP).
 - **API Integration:** Handled via HTTP requests in **huggingface_service.dart**
 
@@ -99,7 +99,7 @@ flutter run
 ### 🌟 **1. AI-Powered Astrology Insights**
 
 - Users input their **name, date of birth, time of birth, and place of birth**.
-- Data is sent to **Hugging Face Falcon-7B model**, which generates personalized astrology readings.
+- Data is sent to **Hugging Face astroGPT model**, which generates personalized astrology readings.
 - Users can also upload an **image**, which is stored securely in **Firebase Storage**.
 
 ### 💑 **2. Partner Compatibility Check**
