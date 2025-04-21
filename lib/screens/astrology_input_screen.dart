@@ -297,6 +297,7 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
     return TextField(
       controller: _dobController,
       readOnly: true,
+      onTap: () => _selectDate(context),
       style: TextStyle(color: Colors.amber[50]),
       decoration: InputDecoration(
         labelText: 'Date of Birth',
@@ -324,6 +325,7 @@ class _AstrologyInputScreenState extends State<AstrologyInputScreen> {
     return TextField(
       controller: _timeController,
       readOnly: true,
+      onTap: () => _selectTime(context),
       style: TextStyle(color: Colors.amber[50]),
       decoration: InputDecoration(
         labelText: 'Time of Birth',

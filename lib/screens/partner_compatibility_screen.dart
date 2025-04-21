@@ -320,6 +320,7 @@ class _PartnerCompatibilityScreenState
     return TextField(
       controller: controller,
       readOnly: true,
+      onTap: () => _selectDate(context, controller),
       style: TextStyle(color: Colors.amber[50]),
       decoration: InputDecoration(
         labelText: "Date of Birth",
@@ -347,6 +348,7 @@ class _PartnerCompatibilityScreenState
     return TextField(
       controller: controller,
       readOnly: true,
+      onTap: () => _selectTime(context, controller),
       style: TextStyle(color: Colors.amber[50]),
       decoration: InputDecoration(
         labelText: "Time of Birth",
