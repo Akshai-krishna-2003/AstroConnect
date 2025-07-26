@@ -58,22 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _signInWithGoogle() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    String? result = await _authService.signInWithGoogle();
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (result != null) {
-      _showMessage(result);
-    }
-  }
-
   void _showMessage(String message) {
     ScaffoldMessenger.of(
       context,
@@ -294,36 +278,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
 
                     SizedBox(height: 20),
-
-                    // Sign in with Google (Smaller Logo)
-                    Text("or", style: TextStyle(color: Colors.white70)),
-                    SizedBox(height: 10),
-
-                    GestureDetector(
-                      onTap: _signInWithGoogle,
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              blurRadius: 5,
-                              spreadRadius: 1,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Image.asset(
-                          "assets/google_logo.png",
-                          width: 28,
-                          height: 28,
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 40),
                   ],
                 ),
               ),

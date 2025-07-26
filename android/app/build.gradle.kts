@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.astro_app"
+    namespace = "com.AstroApp.astro_app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.astro_app"
+        applicationId = "com.AstroApp.astro_app"
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

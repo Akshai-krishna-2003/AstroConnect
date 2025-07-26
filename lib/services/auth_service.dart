@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -37,10 +36,10 @@ class AuthService {
         "email": email,
       });
 
-      // Logout user after sign-up to prevent auto-login
+      // Logout user after sign-up to prevent auto-login before verification
       await _auth.signOut();
 
-      return "Verification email sent! Please verify before logging in.";
+      return "Verification email sent! Please check your inbox and also check Spam or Promotions folders. Verify before logging in.";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -54,52 +53,18 @@ class AuthService {
         password: password,
       );
 
-      if (!userCredential.user!.emailVerified) {
+      // Reload user to update emailVerified
+      await userCredential.user!.reload();
+      User? refreshedUser = _auth.currentUser;
+
+      if (!refreshedUser!.emailVerified) {
         await _auth.signOut(); // Prevent login without email verification
         return "Please verify your email before logging in.";
       }
 
-      return null; // No errors
+      return null; // Login successful, no error
     } on FirebaseAuthException catch (e) {
       return e.message;
-    }
-  }
-
-  // Google Sign-In with Auto Username Generation
-  Future<String?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return "Google Sign-In canceled.";
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      UserCredential userCredential = await _auth.signInWithCredential(
-        credential,
-      );
-      User? user = userCredential.user;
-
-      // Extract username from email (before @ symbol)
-      String username = googleUser.email.split('@')[0];
-
-      // Check if user already exists in Firestore
-      DocumentSnapshot userDoc =
-          await _firestore.collection("users").doc(user!.uid).get();
-      if (!userDoc.exists) {
-        await _firestore.collection("users").doc(user.uid).set({
-          "fullName": googleUser.displayName ?? "User",
-          "username": username,
-          "email": googleUser.email,
-        });
-      }
-
-      return null; // Success
-    } catch (e) {
-      return "Google Sign-In failed. Please try again.";
     }
   }
 
@@ -107,7 +72,7 @@ class AuthService {
   Future<String?> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      return "Password reset link sent to your email!";
+      return "Password reset link sent to your email ... Check email or spam folder!";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -116,7 +81,6 @@ class AuthService {
   // Logout
   Future<void> logout() async {
     await _auth.signOut();
-    await GoogleSignIn().signOut();
   }
 
   // Get User Details from Firestore
