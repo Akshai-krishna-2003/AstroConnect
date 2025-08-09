@@ -1,3 +1,4 @@
+import 'package:astro_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 
@@ -14,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   bool _isLogin = true;
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   void _authenticate() async {
     String email = _emailController.text.trim();
@@ -54,6 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isLogin = true;
         });
+      }
+    } else {
+      if (_isLogin) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
       }
     }
   }
@@ -224,7 +233,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _buildTextField(
                       "Password",
                       _passwordController,
-                      obscureText: true,
+                      isPassword: true,
                     ),
 
                     SizedBox(height: 20),
@@ -291,13 +300,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildTextField(
     String label,
     TextEditingController controller, {
-    bool obscureText = false,
+    bool isPassword = false,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
       child: TextField(
         controller: controller,
-        obscureText: obscureText,
+        obscureText: isPassword ? _obscurePassword : false,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(color: Colors.cyanAccent),
@@ -309,6 +318,23 @@ class _LoginScreenState extends State<LoginScreen> {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white70, width: 1),
           ),
+          // Add eye icon suffix for password fields
+          suffixIcon:
+              isPassword
+                  ? IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.cyanAccent,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  )
+                  : null,
         ),
       ),
     );

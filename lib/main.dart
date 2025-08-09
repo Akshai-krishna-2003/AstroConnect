@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'screens/login_screen.dart';
-import 'screens/home_screen.dart';
 import 'services/localization_service.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'screens/auth_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,25 +51,6 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-    );
-  }
-}
-
-class AuthWrapper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          final User? user = snapshot.data;
-          if (user != null && user.emailVerified) {
-            return HomeScreen();
-          }
-          return LoginScreen();
-        }
-        return Scaffold(body: Center(child: CircularProgressIndicator()));
-      },
     );
   }
 }

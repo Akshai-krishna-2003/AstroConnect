@@ -53,16 +53,21 @@ class AuthService {
         password: password,
       );
 
-      // Reload user to update emailVerified
+      // Check verification status without reload first
+      if (userCredential.user!.emailVerified) {
+        return null; // Already verified
+      }
+
+      // If not verified, reload and check again
       await userCredential.user!.reload();
       User? refreshedUser = _auth.currentUser;
 
-      if (!refreshedUser!.emailVerified) {
-        await _auth.signOut(); // Prevent login without email verification
+      if (refreshedUser == null || !refreshedUser.emailVerified) {
+        await _auth.signOut();
         return "Please verify your email before logging in.";
       }
 
-      return null; // Login successful, no error
+      return null;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
