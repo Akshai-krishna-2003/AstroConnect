@@ -94,11 +94,6 @@ android/key.properties
 android/proto/build/
 android/proto/src/
 
-# Hugging Face Model Cache
-huggingface_model_cache/
-lib/services/huggingface_service.dart
-lib/services/huggingface2_service.dart
-
 # Misc
 *.orig
 *.swp
